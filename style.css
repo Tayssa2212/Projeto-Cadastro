@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #5a5a5a;
+ }
+
+ .conteiner {
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #5716c0d7;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+ }
+ 
+ form {
+    margin-bottom: 20px;
+ }
+
+ input [type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+
+ }
+
+ button {
+
+    padding: 10px 15px;
+    background-color: #2600ff;
+    color:white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+ }
+
+ table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+th,td{
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+ 
+button.edit, button.delete {
+    padding: 5px 10px;
+    margin: 2px;
+
+}
