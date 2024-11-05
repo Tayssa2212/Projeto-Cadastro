@@ -1,65 +1,72 @@
-class Cadastro {
-    constructor() {
-        this.dados = [];
+class FormHandler {
+    constructor(formId, tableId) {
+        this.form = document.getElementById(formId);
+        this.table = document.getElementById(tableId);
+        this.setupForm();
     }
 
-    adicionar(dado) {
-        this.dados.push(dado);
-        this.render();
-    }
-
-    editar(index, novoDado) {
-        this.dados[index] = novoDado;
-        this.render();
-    }
-
-    deletar(index) {
-        this.dados.splice(index, 1);
-        this.render();
-    }
-
-    render() {
-        const tabela = document.querySelector("#tabelaDados tbody");
-        tabela.innerHTML = "";
-        this.dados.forEach((dado, index) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${dado.nome}</td>
-                <td>${dado.email}</td>
-                <td>
-                    <button class="edit" onclick="editar(${index})">Editar</button>
-                    <button class="delete" onclick="deletar(${index})">Deletar</button>
-                </td>
-            `;
-            tabela.appendChild(row);
+    setupForm() {
+        this.form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = this.getFormData();
+            if (formData) {
+                this.addRow(formData);
+                this.clearForm();
+            }
         });
     }
+
+    getFormData() {
+        const input = this.form.querySelector('input[type="text"]');
+        const value = input.value.trim();
+        return value ? value : null;
+    }
+
+    clearForm() {
+        this.form.querySelector('input[type="text"]').value = '';
+    }
+
+    addRow(data) {
+        const row = this.table.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+
+        cell1.textContent = data;
+        cell2.appendChild(this.createActionButtons(row));
+    }
+
+    createActionButtons(row) {
+        const container = document.createElement('div');
+
+        const editButton = document.createElement('button');
+        editButton.className = 'edit';
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => this.editRow(row);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete';
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => this.deleteRow(row);
+
+        container.appendChild(editButton);
+        container.appendChild(deleteButton);
+
+        return container;
+    }
+
+    editRow(row) {
+        const input = this.form.querySelector('input[type="text"]');
+        input.value = row.cells[0].textContent;
+        this.deleteRow(row);
+    }
+
+    deleteRow(row) {
+        row.remove();
+    }
 }
 
-const cadastro = new Cadastro();
-
-document.getElementById("formCadastro").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const nome = document.getElementById("nome").value;
-    const email = document.getElementById("email").value;
-
-    if (nome && email) {
-        cadastro.adicionar({ nome, email });
-        document.getElementById("formCadastro").reset();
-    }
+// Inicializando o manipulador com o formulário e tabela
+document.addEventListener('DOMContentLoaded', () => {
+    new FormHandler('myForm', 'myTable');
 });
-
-function editar(index) {
-    const nome = prompt("Digite o novo nome:", cadastro.dados[index].nome);
-    const email = prompt("Digite o novo email:", cadastro.dados[index].email);
-
-    if (nome && email) {
-        cadastro.editar(index, { nome, email });
-    }
-}
-
-function deletar(index) {
-    if (confirm("Tem certeza que deseja deletar este dado?")) {
-        cadastro.deletar(index);
-    }
-}
+console.log
